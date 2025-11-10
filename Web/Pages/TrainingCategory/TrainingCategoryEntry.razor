@@ -1,0 +1,44 @@
+﻿@page "/TrainingCategoryEntry"
+@using Domain.Models;
+
+<PageRF Title="TrainingCategory Entry">
+    <PageHeaderRF>
+        <Actions>
+            <FormAction SaveAsNew="false" SaveAndExit="false" ResetButton="false" />
+        </Actions>
+    </PageHeaderRF>
+    <ContainerRF>
+        <FormRF @ref=formRF Model="TrainingCategory" OnAfterSave=afterSave>
+            <RowRF>
+
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <InputRF @bind-Value="@context.CategoryName" Label="Category Name" Placeholder="Enter Category Name" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <SwitchRF @bind-Value="@context.TrainingStatus" Label="Training Status" ActiveText="Active" InactiveText="Inactive" />
+                </ColRF>
+
+            </RowRF>
+        </FormRF>
+    </ContainerRF>
+</PageRF>
+
+@code
+{
+    Db db { get; set; }
+    FormRF<TrainingCategory> formRF { get; set; }
+
+    protected override void OnInitialized()
+    {
+        db = new Db(config);
+    }
+
+
+    void afterSave(TrainingCategory model)
+    {
+        formRF?.Reset();
+        nav.NavigateTo($"/TrainingCategoryList");
+        
+    }
+
+}

@@ -1,0 +1,41 @@
+﻿@page "/DepartmentEntry"
+@using Domain.Models;
+
+<PageRF Title="Department Entry">
+    <PageHeaderRF>
+        <Actions>
+            <FormAction SaveAsNew="false" SaveAndExit="false" ResetButton="false" />
+        </Actions>
+    </PageHeaderRF>
+    <ContainerRF>
+        <FormRF @ref=formRF Model="Department" OnAfterSave=afterSave>
+            <RowRF>
+
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <InputRF @bind-Value="@context.DepartmentName" Label="Department Name" Placeholder="Enter Department Name" />
+                </ColRF>
+
+            </RowRF>
+        </FormRF>
+    </ContainerRF>
+</PageRF>
+@code
+{
+    Db db { get; set; }
+    FormRF<Department> formRF { get; set; }
+    
+protected override void OnInitialized()
+    {
+        db = new Db(config);
+    }
+
+
+    void afterSave(Department model)
+    {
+        formRF?.Reset();
+        // if (!IsDraft)
+        // {
+        nav.NavigateTo($"/DepartmentList");
+        //}
+    }
+}

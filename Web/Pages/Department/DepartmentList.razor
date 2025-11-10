@@ -1,0 +1,28 @@
+﻿@page "/DepartmentList"
+@using Domain.Models;
+
+<PageRF Title="Department List">
+    <PageHeaderRF>
+        <Actions>
+            <ButtonRF Icon="fa-solid fa-plus" OnClick="@(_ => nav.NavigateTo("/DepartmentEntry"))" Class="btn-brand">Add New</ButtonRF>
+        </Actions>
+    </PageHeaderRF>
+    <TableRF Model="Department" EditModel="typeof(Department)">
+        <HeaderRowTemplate>
+
+            <th style="width:auto">Department Id</th>
+            <th style="width:auto">Department Name</th>
+
+        </HeaderRowTemplate>
+        <BodyRowTemplate>
+
+            <td style="width:auto">@context.DepartmentId</td>
+            <td style="width:auto">@context.DepartmentName</td>
+
+        </BodyRowTemplate>
+    </TableRF>
+</PageRF>
+@code
+{
+
+}

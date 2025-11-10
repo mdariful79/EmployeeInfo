@@ -1,0 +1,48 @@
+﻿@page "/DesignationEntry"
+@using Domain.Models;
+
+<PageRF Title="Designation Entry">
+    <PageHeaderRF>
+        <Actions>
+            <FormAction SaveAsNew="false" SaveAndExit="false" ResetButton="false" />
+        </Actions>
+    </PageHeaderRF>
+    <ContainerRF>
+        <FormRF @ref=formRF Model="Designation" OnAfterSave=afterSave>
+            <RowRF>
+                <ColRF SpanSM="12" Span="4" SpanL="4" SpanXL="4">
+                    <SelectRF @bind-Value="context.DepartmentId"
+                              OptionList="new List<Department> () "
+                              DisplayText="t => t.DepartmentName"
+                              ValueText="t => t.DepartmentId"
+                              Placeholder="Select Department"
+                              Label="Department Name" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <InputRF @bind-Value="@context.DesignationName" Label="Designation Name" Placeholder="Enter Designation Name" />
+                </ColRF>
+
+            </RowRF>
+
+        </FormRF>
+    </ContainerRF>
+</PageRF>
+@code
+{
+    Db db { get; set; }
+    FormRF<Designation> formRF { get; set; }
+    
+protected override void OnInitialized()
+{
+    db = new Db(config);
+}
+
+    void afterSave(Designation model)
+    {
+        formRF?.Reset();
+        // if (!IsDraft)
+        // {
+        nav.NavigateTo($"/DesignationList");
+        //}
+    }
+}

@@ -1,0 +1,141 @@
+﻿@page "/EmployeesEntry"
+@using Domain.Models
+
+<PageRF Title="Employees Entry">
+    <PageHeaderRF>
+        <Actions>
+            <FormAction SaveAsNew="false" SaveAndExit="false" ResetButton="false" />
+        </Actions>
+    </PageHeaderRF>
+
+    <ContainerRF>
+        <FormRF @ref="formRF" Model="Employees" Context="e" OnAfterSave="afterSave">
+            <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                <ImageUploaderRF @bind-Value="@e.ProfilePicPath" Accept=".png,.jpg,.jpeg" Label="Profile Pic Path" MaxFile="1" />
+            </ColRF>
+
+            <RowRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <InputRF @bind-Value="e.EmployeeName" Label="Employee Name" Placeholder="Enter Employee Name" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <InputRF @bind-Value="e.EmployeeAge" Label="Employee Age" Placeholder="Enter Employee Age" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <DatePickerRF @bind-Value="e.DateOfBirth" Label="Date Of Birth" Format="yyyy MMMM dd" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <SelectRF @bind-Value="e.Gender" Label="Gender"
+                              OptionList="GenderList"
+                              DisplayText="t => t.DisplayText"
+                              ValueText="t => t.ValueText"
+                              OrderBy="t => t.DisplayText"
+                              Placeholder="Select Gender" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <SwitchRF @bind-Value="e.IsActive" Label="Is Active" ActiveText="Active" InactiveText="Inactive" />
+                </ColRF>
+            </RowRF>
+
+            <RowRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <DatePickerRF @bind-Value="e.JobStart" Label="Job Start" Format="yyyy MMMM dd" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <DatePickerRF @bind-Value="e.JobEnd" Label="Job End" Format="yyyy MMMM dd" MinDate="DateTime.UtcNow" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                    <TextareaRF @bind-Value="e.JobDescription" Label="Job Description" Placeholder="Enter Job Description" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="4" SpanL="4" SpanXL="4">
+                    <SelectRF @bind-Value="e.DepartmentId"
+                              OptionList="new List<Department>()"
+                              DisplayText="t => t.DepartmentName"
+                              ValueText="t => t.DepartmentId"
+                              Placeholder="Select Department"
+                              Label="Department Name" />
+                </ColRF>
+                <ColRF SpanSM="12" Span="4" SpanL="4" SpanXL="4">
+                    <SelectRF @bind-Value="e.DesignationId"
+                              OptionList="new List<Designation>()"
+                              Filter="t => t.DepartmentId == e.DepartmentId"
+                              DisplayText="t => t.DesignationName"
+                              ValueText="t => t.DesignationId"
+                              Placeholder="Select Designation"
+                              Label="Designation Name" />
+                </ColRF>
+            </RowRF>
+
+            <RowRF>
+                <ColRF SpanSM="6" Span="6" SpanL="6" SpanXL="6">
+                    <ContainerRF Class="mt-2" Title="Add Training">
+                        <RowRF>
+                            <ColRF SpanSM="12" Span="12" SpanL="12" SpanXL="12">
+                                <RowRF>
+                                    <ColRF SpanSM="12" Span="12" SpanL="12" SpanXL="12">
+                                        <InputRF @bind-Value="training.TrainingName" Placeholder="Enter Training Name" Label="Training Name" />
+                                    </ColRF>
+                                    <ColRF SpanSM="12" Span="12" SpanL="12" SpanXL="12">
+                                        <SelectRF @bind-Value="training.CategoryId"
+                                                  OptionList="new List<TrainingCategory>()"
+                                                  DisplayText="t => t.CategoryName"
+                                                  ValueText="t => t.CategoryId"
+                                                  Placeholder="Select Category"
+                                                  Label="Category Name" />
+                                    </ColRF>
+                                </RowRF>
+
+                                <ButtonRF OnClick="@(() => AddTraining(training))">Add Training</ButtonRF>
+                            </ColRF>
+                        </RowRF>
+                    </ContainerRF>
+                </ColRF>
+
+                <ColRF SpanSM="6" Span="6" SpanL="6" SpanXL="6" Class="mt-2">
+                    <TableRF @ref="tableRF" @bind-DataList="e.Training" Context="p" PageSize="5"  EditUrl="/Training">
+                        <HeaderRowTemplate>
+                            <th>Training Name</th>
+                        </HeaderRowTemplate>
+                        <BodyRowTemplate>
+                            <td>@p.TrainingName</td>
+                        </BodyRowTemplate>
+                    </TableRF>
+                </ColRF>
+            </RowRF>
+        </FormRF>
+
+    </ContainerRF>
+</PageRF>
+
+@code {
+    Db db { get; set; }
+    FormRF<Employees> formRF { get; set; }
+    TableRF<Training> tableRF { get; set; }
+
+    List<SpinnerValue> GenderList = new();
+    Training training { get; set; } = new();
+
+    protected override void OnInitialized()
+    {
+        db = new Db(config);
+        GenderList = new List<SpinnerValue>()
+        {
+            new SpinnerValue { DisplayText = "Male", ValueText = "1" },
+            new SpinnerValue { DisplayText = "Female", ValueText = "0" }
+        };
+    }
+
+    void afterSave(Employees model)
+    {
+        formRF?.Reset();
+        nav.NavigateTo("/EmployeesList");
+    }
+
+    private void AddTraining(Training child)
+    {
+        formRF.Data.Training.Add(child);
+        training = new();
+        tableRF.Refresh();
+    }
+
+}

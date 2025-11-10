@@ -1,0 +1,30 @@
+﻿@page "/DesignationList"
+@using Domain.Models;
+
+<PageRF Title="Designation List">
+    <PageHeaderRF>
+        <Actions>
+
+            <ButtonRF Icon="fa-solid fa-plus" OnClick="@(_ => nav.NavigateTo("/DesignationEntry"))" Class="btn-brand">Add New</ButtonRF>
+
+        </Actions>
+    </PageHeaderRF>
+    <TableRF Model="Designation" EditModel="typeof(Designation)">
+        <HeaderRowTemplate>
+
+            <th style="width:auto">Designation Id</th>
+            <th style="width:auto">Designation Name</th>
+
+        </HeaderRowTemplate>
+        <BodyRowTemplate>
+
+            <td style="width:auto">@context.DesignationId</td>
+            <td style="width:auto">@context.DesignationName</td>
+
+        </BodyRowTemplate>
+    </TableRF>
+</PageRF>
+@code
+{
+
+}

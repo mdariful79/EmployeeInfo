@@ -1,0 +1,87 @@
+﻿@page "/EmployeesList"
+@using Domain.Models;
+
+<PageRF Title="Employees List">
+    <PageHeaderRF>
+        <Actions>
+            <ButtonRF Icon="fa-solid fa-plus" OnClick="@(_ => nav.NavigateTo("/EmployeesEntry"))" Class="btn-brand">Add New</ButtonRF>
+        </Actions>
+        </PageHeaderRF>
+    <TableRF Model="EmployeesVM" SQL="@($"EXEC dbo.[GetEmployeeListWithTraining] '[PageSize]','[PageNo]'")" EditModel="typeof(Employees)" EditUrl="/EmployeesEntry">
+        <HeaderRowTemplate>
+            <th style="width:auto">Employee Id</th>
+            <th style="width:auto">Employee Name</th>
+            <th style="width:auto">Employee Age</th>
+            <th style="width:auto">Date Of Birth</th>
+            <th style="width:auto">Job Start</th>
+            <th style="width:auto">Job End</th>
+            <th style="width:auto">Gender</th>
+            <th style="width:auto">Job Description</th>
+            <th style="width:auto">Is Active</th>
+            <th style="width:auto">Department</th>
+            <th style="width:auto">Designation</th>
+            <th style="width:auto">Profile</th>
+            <th style="width:auto">Trainings</th>
+        </HeaderRowTemplate>
+        <BodyRowTemplate>
+
+            <td style="width:auto">@context.EmployeesId</td>
+            <td style="width:auto">@context.EmployeeName</td>
+            <td style="width:auto">@context.EmployeeAge</td>
+            <td style="width:auto">@context.DateOfBirth</td>
+            <td style="width:auto">@context.JobStart</td>
+            <td style="width:auto">@context.JobEnd</td>
+            <td style="width:auto">@context.Gender</td>
+            <td style="width:auto">@context.JobDescription</td>
+            <td style="width:auto">@context.IsActive</td>
+            <td style="width:auto">@context.DepartmentName</td>
+            <td style="width:auto">@context.DesignationName</td>
+            <td>
+                <i class="fa-solid fa-eye text-primary" style="cursor:pointer"
+                   @onclick="() => OpenProfileModal(context.ProfilePicPath)"></i>
+            </td>
+            <td style="width:auto">@context.TrainingName</td>
+
+        </BodyRowTemplate>
+    </TableRF>
+    <ModalRF Title="Profile Preview" @bind-ModalEvents="modalEvent" OnClose="OnModalClose">
+        <ModalRFBody>
+            @if (!string.IsNullOrEmpty(selectedImage))
+            {
+                <div class="text-center">
+                    <img src="@selectedImage" class="img-fluid rounded" style="max-height:400px;" />
+                </div>
+            }
+        </ModalRFBody>
+    </ModalRF>
+
+</PageRF>
+@code
+{
+    ModalRF.ModalEventsRF modalEvent = new ModalRF.ModalEventsRF();
+
+    string? selectedImage;
+
+    void OpenProfileModal(string? imagePath)
+    {
+        if (!string.IsNullOrEmpty(imagePath))
+        {
+            selectedImage = imagePath;
+            InvokeAsync(StateHasChanged);
+            modalEvent.Open(); 
+        }
+    }
+
+
+    void OnModalClose(string reason)
+    {
+        selectedImage = null;
+    }
+
+}
+
+
+
+
+
+            

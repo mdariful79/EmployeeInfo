@@ -1,0 +1,25 @@
+﻿@page "/TrainingCategoryList"
+@using Domain.Models;
+<PageRF Title="TrainingCategory List">
+    <PageHeaderRF>
+        <Actions>
+            <ButtonRF Icon="fa-solid fa-plus" OnClick="@(_ => nav.NavigateTo("/TrainingCategoryEntry"))" Class="btn-brand">Add New</ButtonRF>
+        </Actions>
+    </PageHeaderRF>
+    <TableRF Model="TrainingCategory" EditModel="typeof(TrainingCategory)">
+        <HeaderRowTemplate>
+            <th style="width:auto">Category Name</th>
+            <th style="width:auto">Training Status</th>
+
+        </HeaderRowTemplate>
+        <BodyRowTemplate>
+            <td style="width:auto">@context.CategoryName</td>
+            <td style="width:auto">@context.TrainingStatus</td>
+
+        </BodyRowTemplate>
+    </TableRF>
+</PageRF>
+@code
+{
+
+}

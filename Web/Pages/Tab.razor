@@ -1,0 +1,135 @@
+﻿@page "/Tab"
+@using Domain.Models;
+
+<PageRF Title="Tab List">
+    <PageHeaderRF>
+        <Actions>
+
+            <ButtonRF Icon="fa-solid fa-plus" OnClick="@(_ => nav.NavigateTo("/DesignationEntry"))" Class="btn-brand">Add New</ButtonRF>
+
+        </Actions>
+    </PageHeaderRF>
+
+    <FormRF @ref=formRF Model="Training" OnAfterSave=afterSave>
+        <TabRF OnNext="next" OnClose="close"
+               OnPrev="prev" StepperFooter=true Stepper=true>
+            <TabHeader>
+                <TabHeaderRF Horizontal=true TextSize="12" Text="Summary" Icon="1" IconSize="12" Class="" Id="" />
+            </TabHeader>
+            <TabBody>Your Account Summary
+                <RowRF>
+
+                    <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                        <InputRF @bind-Value="@context.CategoryId" Label="CategoryId" Placeholder="Enter Category id" />
+                    </ColRF>
+                   
+
+                </RowRF>
+
+
+            </TabBody>
+            <TabHeader>
+                <TabHeaderRF Horizontal=true TextSize="12" Text="Details" Icon="fas fa-file-alt" IconSize="12" />
+            </TabHeader>
+            <TabBody>
+                <RowRF>
+
+                    <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                        <InputRF @bind-Value="@context.TrainingName" Label="TrainingName" Placeholder="Enter Training Name" />
+                    </ColRF>
+
+
+                </RowRF>
+            </TabBody>
+            <TabHeader>
+                <TabHeaderRF Horizontal=true TextSize="12" Text="Details 2" Icon="fas fa-file-alt" IconSize="12" />
+            </TabHeader>
+            <TabBody>
+                <RowRF>
+
+                    <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                        <InputRF @bind-Value="@context.EmployeesId" Label="EmployeesId" Placeholder="Enter EmployeesId" />
+                    </ColRF>
+
+
+                </RowRF>
+            </TabBody>
+            <TabHeader>
+                <TabHeaderRF Horizontal=true TextSize="12" Text="Details 3" Icon="fas fa-file-alt" IconSize="12" />
+            </TabHeader>
+            <TabBody>
+                <RowRF>
+
+                    <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
+                        <InputRF @bind-Value="@context.Venue" Label="Venue" Placeholder="Enter Venue" />
+                    </ColRF>
+
+
+                </RowRF>
+            </TabBody>
+        </TabRF>
+  
+    </FormRF>
+</PageRF>
+@code
+{
+    Db db { get; set; }
+    FormRF<Training> formRF { get; set; }
+
+    protected override void OnInitialized()
+    {
+        db = new Db(config);
+    }
+
+
+    void afterSave(Training model)
+    {
+        formRF?.Reset();
+        nav.NavigateTo($"/TrainingCategoryList");
+
+    }
+
+
+    string colorName = "#eeeeee";
+
+    void close(int i)
+
+    {
+
+    }
+
+    void open(int i)
+
+    {
+
+    }
+
+    bool next(int i)
+
+    {
+
+        if (i == 3)
+
+        {
+            var data = formRF.Data;
+            db.Save(data);
+            db.Commit();
+
+            RF.UI.Toaster.Success("OK");
+
+        }
+
+        return true;
+
+    }
+
+    void prev(int i)
+
+    {
+
+    }
+
+
+}
+
+

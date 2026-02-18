@@ -16,6 +16,7 @@ namespace Domain.Models
 
         public string TrainingName { get; set; }
         public int EmployeesId { get; set; }
+        public string Venue { get; set; }
 
     }
 }

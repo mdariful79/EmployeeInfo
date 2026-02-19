@@ -1,22 +1,23 @@
 ﻿@page "/Tab"
 @using Domain.Models;
+@* <style>
+    .custom-stepper {
+        display: flex;
+        justify-content: space-between;
+    }
 
-<PageRF Title="Tab List">
-    <PageHeaderRF>
-        <Actions>
+</style> *@
 
-            <ButtonRF Icon="fa-solid fa-plus" OnClick="@(_ => nav.NavigateTo("/DesignationEntry"))" Class="btn-brand">Add New</ButtonRF>
-
-        </Actions>
-    </PageHeaderRF>
+<PageRF Title="Application Form Dashboard">
+    
 
     <FormRF @ref=formRF Model="Training" OnAfterSave=afterSave>
         <TabRF OnNext="next" OnClose="close"
                OnPrev="prev" StepperFooter=true Stepper=true>
             <TabHeader>
-                <TabHeaderRF Horizontal=true TextSize="12" Text="Summary" Icon="1" IconSize="12" Class="" Id="" />
+                <TabHeaderRF Horizontal=false TextSize="calc(10px + 1vw);" Text="Event Details" Icon="fa-solid fa-1" IconSize="calc(10px + 1vw);" />
             </TabHeader>
-            <TabBody>Your Account Summary
+            <TabBody>
                 <RowRF>
 
                     <ColRF SpanSM="12" Span="3" SpanL="3" SpanXL="3">
@@ -29,7 +30,7 @@
 
             </TabBody>
             <TabHeader>
-                <TabHeaderRF Horizontal=true TextSize="12" Text="Details" Icon="fas fa-file-alt" IconSize="12" />
+                <TabHeaderRF Horizontal=false TextSize="calc(10px + 1vw);" Text="Funding Info" Icon="fa-solid fa-2" IconSize="calc(10px + 1vw);" />
             </TabHeader>
             <TabBody>
                 <RowRF>
@@ -42,7 +43,7 @@
                 </RowRF>
             </TabBody>
             <TabHeader>
-                <TabHeaderRF Horizontal=true TextSize="12" Text="Details 2" Icon="fas fa-file-alt" IconSize="12" />
+                <TabHeaderRF Horizontal=false TextSize="calc(10px + 1vw);" Text="Risk Assessment" Icon="fa-solid fa-3" IconSize="calc(10px + 1vw);" />
             </TabHeader>
             <TabBody>
                 <RowRF>
@@ -55,7 +56,7 @@
                 </RowRF>
             </TabBody>
             <TabHeader>
-                <TabHeaderRF Horizontal=true TextSize="12" Text="Details 3" Icon="fas fa-file-alt" IconSize="12" />
+                <TabHeaderRF Horizontal=false TextSize="calc(10px + 1vw);" Text="Due Diligence" Icon="fa-solid fa-3" IconSize="calc(10px + 1vw);" />
             </TabHeader>
             <TabBody>
                 <RowRF>
